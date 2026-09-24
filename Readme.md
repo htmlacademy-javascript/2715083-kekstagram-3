@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Артур Голованов](https://up.htmlacademy.ru/javascript-individual/3/user/2715083).
-* Наставник: `Неизвестно`.
+* Наставник: [Евгения Подопригора](https://htmlacademy.ru/profile/id2387199).
 
 ---
 
