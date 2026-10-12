@@ -1,16 +1,15 @@
-const checkLength = function(string, count) {
+function checkLength(string, count) {
   if (string.length <= count) {
     return true;
   }
   return false;
-};
+}
 
-console.log(checksLength('проверяемая строка', 20));
-console.log(checksLength('проверяемая строка', 18));
-console.log(checksLength('проверяемая строка', 10));
+checkLength('проверяемая строка', 20);
+checkLength('проверяемая строка', 18);
+checkLength('проверяемая строка', 10);
 
-
-const checkPalindrome = function (string) {
+function checkPalindrome(string) {
   let palindromString = '';
   for (let i = string.length - 1; i >= 0; i--) {
     palindromString += string[i];
@@ -19,20 +18,19 @@ const checkPalindrome = function (string) {
     return true;
   }
   return false;
-};
+}
 
+checkPalindrome('топот');
+checkPalindrome('ДовОд');
+checkPalindrome('Кекс');
+checkPalindrome('Лёша на полке клопа нашёл ');
 
-console.log(checkPalindrome('топот'));
-console.log(checkPalindrome('ДовОд'));
-console.log(checkPalindrome('Кекс'));
-console.log(checkPalindrome('Лёша на полке клопа нашёл '));
-
-let extractNumber = function (input) {
-  let str = input.toString();
+function extractNumber(input) {
+  const str = input.toString();
   let resultString = '';
   for (let i = 0; i < str.length; i++) {
-    let currentChar = str[i];
-    let parsedChar = parseInt(currentChar, 10);
+    const currentChar = str[i];
+    const parsedChar = parseInt(currentChar, 10);
     if (!Number.isNaN(parsedChar)) {
       resultString += currentChar;
     }
@@ -41,10 +39,13 @@ let extractNumber = function (input) {
     return NaN;
   }
   return parseInt(resultString, 10);
-};
+}
 
-console.log(extractNumber('2023 год'));
-console.log(extractNumber('ECMAScript 2022'));
-console.log(extractNumber('1 кефир, 0.5 батона'));
-console.log(extractNumber('агент 007'));
-console.log(extractNumber('а я томат'));
+extractNumber('2023 год');
+extractNumber('ECMAScript 2022');
+extractNumber('1 кефир, 0.5 батона');
+extractNumber('агент 007');
+extractNumber('а я томат');
+extractNumber(2023);
+extractNumber(-1);
+extractNumber(1.5);
