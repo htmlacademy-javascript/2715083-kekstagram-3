@@ -50,3 +50,22 @@ extractNumber(2023);
 extractNumber(-1);
 extractNumber(1.5);
 
+const isMeetingInWorkHours = function(workStart, workEnd, meetingStart, duration) {
+  function convertToMinutes(timeString){
+    const timeArray = timeString.split(':');
+    const totalTime = Number(timeArray[0]) * 60 + Number(timeArray[1]);
+    return totalTime;
+  }
+  const workStartMinutes = convertToMinutes(workStart);
+  const workEndMinutes = convertToMinutes(workEnd);
+  const meetingStartMinutes = convertToMinutes(meetingStart);
+
+
+  return meetingStartMinutes >= workStartMinutes && meetingStartMinutes + duration <= workEndMinutes;
+};
+
+isMeetingInWorkHours('08:00', '17:30', '14:00', 90);
+isMeetingInWorkHours('8:0', '10:0', '8:0', 120);
+isMeetingInWorkHours('08:00', '14:30', '14:00', 90);
+isMeetingInWorkHours('14:00', '17:30', '08:0', 90);
+isMeetingInWorkHours('8:00', '17:30', '08:00', 900);
