@@ -1,3 +1,6 @@
+import { resetScale } from './scale.js';
+import { resetEffects } from './effects.js';
+
 const overlay = document.querySelector('.img-upload__overlay');
 const uploadInput = document.querySelector('.img-upload__input');
 const cancelButton = document.querySelector('.img-upload__cancel');
@@ -12,6 +15,8 @@ const closeForm = () => {
   overlay.classList.add('hidden');
   body.classList.remove('modal-open');
   uploadInput.value = '';
+  resetScale();
+  resetEffects();
 };
 
 uploadInput.addEventListener('change', openForm);
