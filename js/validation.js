@@ -6,34 +6,13 @@ const MAX_HASHTAG_COUNT = 5;
 const MAX_DESCRIPTION_LENGTH = 140;
 const HASHTAG_REGEX = /^#[a-zа-яё0-9]{1,19}$/i;
 
-const parseHashtags = (value) => value.trim().toLowerCase().split(/\s+/);
+const parseHashtags = (value) => value.trim().toLowerCase().split(/\s+/).filter(Boolean);
 
 const validateHashtags = (value) => {
-  const trimmedValue = value.trim();
-
-  if (trimmedValue === '') {
-    return true;
-  }
-
-  const hashtags = parseHashtags(trimmedValue);
-
-  if (hashtags.length > MAX_HASHTAG_COUNT) {
-    return false;
-  }
-
-  for (const hashtag of hashtags) {
-    if (!HASHTAG_REGEX.test(hashtag)) {
-      return false;
-    }
-  }
-
-  const uniqueHashtags = new Set(hashtags);
-
-  if (uniqueHashtags.size !== hashtags.length) {
-    return false;
-  }
-
-  return true;
+  const hashtags = parseHashtags(value);
+  return hashtags.length <= MAX_HASHTAG_COUNT &&
+    hashtags.every((hashtag) => HASHTAG_REGEX.test(hashtag)) &&
+    new Set(hashtags).size === hashtags.length;
 };
 
 const validateDescription = (value) => value.length <= MAX_DESCRIPTION_LENGTH;
@@ -45,20 +24,16 @@ const pristine = new Pristine(form, {
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
-pristine.addValidator(
-  hashtagInput,
-  validateHashtags,
-  'Неправильный хэштег'
-);
+pristine.addValidator(hashtagInput, validateHashtags, 'Проверьте хэштеги: не более 5, без повторов; каждый должен начинаться с # и содержать до 19 букв или цифр', 3);
+pristine.addValidator(descriptionInput, validateDescription, `Длина комментария не может превышать ${MAX_DESCRIPTION_LENGTH} символов`);
 
-pristine.addValidator(
-  descriptionInput,
-  validateDescription,
-  `Длина комментария не может превышать ${MAX_DESCRIPTION_LENGTH} символов`
-);
+const validateForm = () => pristine.validate();
+const resetValidation = () => pristine.reset();
 
 form.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
+  if (!validateForm()) {
     evt.preventDefault();
   }
 });
+
+export { validateForm, resetValidation };

@@ -93,8 +93,19 @@ effectLevelSlider.noUiSlider.on('update', (values) => {
 });
 
 effectsList.addEventListener('change', (evt) => {
+  if (!evt.target.matches('.effects__radio')) {
+    return;
+  }
+
   const effectName = evt.target.value;
   updateSlider(effectName);
+
+  if (effectName === 'none') {
+    applyEffect(0, effectName);
+    return;
+  }
+
+  effectLevelSlider.noUiSlider.set(EFFECTS[effectName].max);
 });
 
 const resetEffects = () => {
