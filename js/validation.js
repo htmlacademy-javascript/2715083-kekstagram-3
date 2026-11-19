@@ -1,6 +1,6 @@
-const form = document.querySelector('.img-upload__form');
-const hashtagInput = document.querySelector('.text__hashtags');
-const descriptionInput = document.querySelector('.text__description');
+const formElement = document.querySelector('.img-upload__form');
+const hashtagInputElement = document.querySelector('.text__hashtags');
+const descriptionInputElement = document.querySelector('.text__description');
 
 const MAX_HASHTAG_COUNT = 5;
 const MAX_DESCRIPTION_LENGTH = 140;
@@ -21,17 +21,17 @@ const validateHashtagUniqueness = (value) => {
 
 const validateDescription = (value) => value.length <= MAX_DESCRIPTION_LENGTH;
 
-const pristine = new Pristine(form, {
+const pristine = new Pristine(formElement, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextTag: 'div',
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
-pristine.addValidator(hashtagInput, validateHashtagFormat, 'Неправильный хэштег');
-pristine.addValidator(hashtagInput, validateHashtagCount, 'Нельзя указать больше пяти хэштегов');
-pristine.addValidator(hashtagInput, validateHashtagUniqueness, 'Хэштеги не должны повторяться');
-pristine.addValidator(descriptionInput, validateDescription, `Длина комментария не может превышать ${MAX_DESCRIPTION_LENGTH} символов`);
+pristine.addValidator(hashtagInputElement, validateHashtagFormat, 'Неправильный хэштег');
+pristine.addValidator(hashtagInputElement, validateHashtagCount, 'Нельзя указать больше пяти хэштегов');
+pristine.addValidator(hashtagInputElement, validateHashtagUniqueness, 'Хэштеги не должны повторяться');
+pristine.addValidator(descriptionInputElement, validateDescription, `Длина комментария не может превышать ${MAX_DESCRIPTION_LENGTH} символов`);
 
 const validateForm = () => pristine.validate();
 const resetValidation = () => pristine.reset();

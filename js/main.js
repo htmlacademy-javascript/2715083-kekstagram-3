@@ -21,12 +21,12 @@ loadPhotos()
   })
 
   .catch(() => {
-    const errorTemplate = document.querySelector('#data-error');
-    const errorMessage = errorTemplate.content.firstElementChild.cloneNode(true);
+    const errorTemplateElement = document.querySelector('#data-error');
+    const errorMessageElement = errorTemplateElement.content.firstElementChild.cloneNode(true);
 
-    document.body.append(errorMessage);
+    document.body.append(errorMessageElement);
 
     setTimeout(() => {
-      errorMessage.remove();
+      errorMessageElement.remove();
     }, DATA_ERROR_DURATION);
   });

@@ -1,7 +1,7 @@
-const scaleControlSmaller = document.querySelector('.scale__control--smaller');
-const scaleControlBigger = document.querySelector('.scale__control--bigger');
-const scaleControlValue = document.querySelector('.scale__control--value');
-const previewImage = document.querySelector('.img-upload__preview img');
+const scaleControlSmallerElement = document.querySelector('.scale__control--smaller');
+const scaleControlBiggerElement = document.querySelector('.scale__control--bigger');
+const scaleControlValueElement = document.querySelector('.scale__control--value');
+const previewImageElement = document.querySelector('.img-upload__preview img');
 
 const SCALE_MIN = 25;
 const SCALE_MAX = 100;
@@ -9,12 +9,12 @@ const SCALE_STEP = 25;
 
 let currentScale = SCALE_MAX;
 
-scaleControlValue.value = `${currentScale}%`;
-previewImage.style.transform = `scale(${currentScale / 100})`;
+scaleControlValueElement.value = `${currentScale}%`;
+previewImageElement.style.transform = `scale(${currentScale / 100})`;
 
 const updateScaleView = () => {
-  scaleControlValue.value = `${currentScale}%`;
-  previewImage.style.transform = `scale(${currentScale / 100})`;
+  scaleControlValueElement.value = `${currentScale}%`;
+  previewImageElement.style.transform = `scale(${currentScale / 100})`;
 };
 
 const decreaseScale = () => {
@@ -31,8 +31,8 @@ const increaseScale = () => {
   }
 };
 
-scaleControlSmaller.addEventListener('click', decreaseScale);
-scaleControlBigger.addEventListener('click', increaseScale);
+scaleControlSmallerElement.addEventListener('click', decreaseScale);
+scaleControlBiggerElement.addEventListener('click', increaseScale);
 
 const resetScale = () => {
   currentScale = SCALE_MAX;

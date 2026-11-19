@@ -3,35 +3,35 @@ import { resetEffects } from './effects.js';
 import { sendPhoto } from './api.js';
 import { validateForm, resetValidation } from './validation.js';
 
-const form = document.querySelector('.img-upload__form');
-const overlay = document.querySelector('.img-upload__overlay');
-const uploadInput = document.querySelector('.img-upload__input');
-const cancelButton = document.querySelector('.img-upload__cancel');
-const hashtagInput = form.querySelector('.text__hashtags');
-const descriptionInput = form.querySelector('.text__description');
-const submitButton = form.querySelector('.img-upload__submit');
-const previewImage = form.querySelector('.img-upload__preview img');
-const effectPreviews = form.querySelectorAll('.effects__preview');
+const formElement = document.querySelector('.img-upload__form');
+const overlayElement = document.querySelector('.img-upload__overlay');
+const uploadInputElement = document.querySelector('.img-upload__input');
+const cancelButtonElement = document.querySelector('.img-upload__cancel');
+const hashtagInputElement = formElement.querySelector('.text__hashtags');
+const descriptionInputElement = formElement.querySelector('.text__description');
+const submitButtonElement = formElement.querySelector('.img-upload__submit');
+const previewImageElement = formElement.querySelector('.img-upload__preview img');
+const effectPreviewElements = formElement.querySelectorAll('.effects__preview');
 let previewObjectUrl = null;
 const successTemplate = document.querySelector('#success').content;
 const errorTemplate = document.querySelector('#error').content;
 let isSending = false;
-let activeMessage = null;
+let activeMessageElement = null;
 
 const setSendingState = (sending) => {
   isSending = sending;
-  submitButton.disabled = sending;
+  submitButtonElement.disabled = sending;
 };
 
 const resetForm = () => {
-  form.reset();
-  uploadInput.value = '';
+  formElement.reset();
+  uploadInputElement.value = '';
   if (previewObjectUrl) {
     URL.revokeObjectURL(previewObjectUrl);
     previewObjectUrl = null;
   }
-  previewImage.src = 'img/upload-default-image.jpg';
-  effectPreviews.forEach((preview) => {
+  previewImageElement.src = 'img/upload-default-image.jpg';
+  effectPreviewElements.forEach((preview) => {
     preview.style.backgroundImage = '';
   });
   resetScale();
@@ -40,16 +40,16 @@ const resetForm = () => {
 };
 
 const closeForm = () => {
-  overlay.classList.add('hidden');
+  overlayElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
   resetForm();
 };
 
 const removeMessage = () => {
-  if (activeMessage) {
-    activeMessage.remove();
-    activeMessage = null;
+  if (activeMessageElement) {
+    activeMessageElement.remove();
+    activeMessageElement = null;
     document.removeEventListener('keydown', onMessageKeydown, true);
     document.removeEventListener('click', onOutsideMessageClick);
   }
@@ -64,17 +64,17 @@ function onMessageKeydown(evt) {
 }
 
 function onOutsideMessageClick(evt) {
-  if (activeMessage && !evt.target.closest('.success__inner, .error__inner')) {
+  if (activeMessageElement && !evt.target.closest('.success__inner, .error__inner')) {
     removeMessage();
   }
 }
 
 const showMessage = (template) => {
   removeMessage();
-  activeMessage = template.cloneNode(true).firstElementChild;
-  document.body.appendChild(activeMessage);
-  const button = activeMessage.querySelector('button');
-  button.addEventListener('click', removeMessage, { once: true });
+  activeMessageElement = template.cloneNode(true).firstElementChild;
+  document.body.appendChild(activeMessageElement);
+  const messageButtonElement = activeMessageElement.querySelector('button');
+  messageButtonElement.addEventListener('click', removeMessage, { once: true });
   document.addEventListener('keydown', onMessageKeydown, true);
   document.addEventListener('click', onOutsideMessageClick);
 };
@@ -87,7 +87,7 @@ function onDocumentKeydown(evt) {
 }
 
 const openForm = () => {
-  const file = uploadInput.files[0];
+  const file = uploadInputElement.files[0];
   if (!file) {
     return;
   }
@@ -97,11 +97,11 @@ const openForm = () => {
   }
   previewObjectUrl = URL.createObjectURL(file);
   const imageUrl = previewObjectUrl;
-  previewImage.src = imageUrl;
-  effectPreviews.forEach((preview) => {
+  previewImageElement.src = imageUrl;
+  effectPreviewElements.forEach((preview) => {
     preview.style.backgroundImage = `url("${imageUrl}")`;
   });
-  overlay.classList.remove('hidden');
+  overlayElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 };
@@ -115,7 +115,7 @@ const onSubmit = (evt) => {
 
   setSendingState(true);
 
-  sendPhoto(new FormData(form))
+  sendPhoto(new FormData(formElement))
     .then(() => {
       closeForm();
       showMessage(successTemplate);
@@ -129,20 +129,20 @@ const onSubmit = (evt) => {
 };
 
 const initUploadForm = () => {
-  uploadInput.addEventListener('change', openForm);
-  cancelButton.addEventListener('click', closeForm);
-  hashtagInput.addEventListener('keydown', (evt) => {
+  uploadInputElement.addEventListener('change', openForm);
+  cancelButtonElement.addEventListener('click', closeForm);
+  hashtagInputElement.addEventListener('keydown', (evt) => {
     if (evt.key === 'Escape') {
       evt.stopPropagation();
     }
   });
-  descriptionInput.addEventListener('keydown', (evt) => {
+  descriptionInputElement.addEventListener('keydown', (evt) => {
     if (evt.key === 'Escape') {
       evt.stopPropagation();
     }
   });
-  form.addEventListener('submit', onSubmit);
-  form.addEventListener('reset', () => {
+  formElement.addEventListener('submit', onSubmit);
+  formElement.addEventListener('reset', () => {
     resetScale();
     resetEffects();
     resetValidation();

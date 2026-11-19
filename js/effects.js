@@ -1,8 +1,8 @@
-const effectsList = document.querySelector('.effects__list');
-const effectLevelContainer = document.querySelector('.img-upload__effect-level');
-const effectLevelSlider = document.querySelector('.effect-level__slider');
-const effectLevelValue = document.querySelector('.effect-level__value');
-const previewImage = document.querySelector('.img-upload__preview img');
+const effectsListElement = document.querySelector('.effects__list');
+const effectLevelContainerElement = document.querySelector('.img-upload__effect-level');
+const effectLevelSliderElement = document.querySelector('.effect-level__slider');
+const effectLevelValueElement = document.querySelector('.effect-level__value');
+const previewImageElement = document.querySelector('.img-upload__preview img');
 
 const EFFECTS = {
   none: {
@@ -52,14 +52,14 @@ const EFFECTS = {
 const applyEffect = (value, effectName) => {
   const effect = EFFECTS[effectName];
   if (effect.filter === '') {
-    previewImage.style.filter = '';
+    previewImageElement.style.filter = '';
   } else {
-    previewImage.style.filter = `${effect.filter}(${value}${effect.unit})`;
+    previewImageElement.style.filter = `${effect.filter}(${value}${effect.unit})`;
   }
-  effectLevelValue.value = value;
+  effectLevelValueElement.value = value;
 };
 
-noUiSlider.create(effectLevelSlider, {
+noUiSlider.create(effectLevelSliderElement, {
   range: {
     min: 0,
     max: 100,
@@ -72,7 +72,7 @@ noUiSlider.create(effectLevelSlider, {
 const updateSlider = (effectName) => {
   const effect = EFFECTS[effectName];
   if (effectName === 'none') {
-    effectLevelSlider.noUiSlider.updateOptions({
+    effectLevelSliderElement.noUiSlider.updateOptions({
       range: {
         min: EFFECTS.none.min,
         max: EFFECTS.none.max,
@@ -80,11 +80,11 @@ const updateSlider = (effectName) => {
       start: EFFECTS.none.max,
       step: EFFECTS.none.step,
     });
-    effectLevelContainer.classList.add('hidden');
+    effectLevelContainerElement.classList.add('hidden');
     return;
   }
-  effectLevelContainer.classList.remove('hidden');
-  effectLevelSlider.noUiSlider.updateOptions({
+  effectLevelContainerElement.classList.remove('hidden');
+  effectLevelSliderElement.noUiSlider.updateOptions({
     range: {
       min: effect.min,
       max: effect.max,
@@ -94,13 +94,13 @@ const updateSlider = (effectName) => {
   });
 };
 
-effectLevelSlider.noUiSlider.on('update', (values) => {
+effectLevelSliderElement.noUiSlider.on('update', (values) => {
   const value = parseFloat(values[0]);
   const currentEffect = document.querySelector('.effects__radio:checked').value;
   applyEffect(value, currentEffect);
 });
 
-effectsList.addEventListener('change', (evt) => {
+effectsListElement.addEventListener('change', (evt) => {
   if (!evt.target.matches('.effects__radio')) {
     return;
   }
@@ -113,12 +113,12 @@ effectsList.addEventListener('change', (evt) => {
     return;
   }
 
-  effectLevelSlider.noUiSlider.set(EFFECTS[effectName].max);
+  effectLevelSliderElement.noUiSlider.set(EFFECTS[effectName].max);
 });
 
 const resetEffects = () => {
-  const noneRadio = document.querySelector('.effects__radio[value="none"]');
-  noneRadio.checked = true;
+  const noneRadioElement = document.querySelector('.effects__radio[value="none"]');
+  noneRadioElement.checked = true;
 
   updateSlider('none');
   applyEffect(EFFECTS.none.max, 'none');

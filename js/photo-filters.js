@@ -2,7 +2,7 @@ import { renderMiniatures, clearMiniatures } from './rendering-miniature.js';
 
 const RANDOM_PHOTOS_COUNT = 10;
 const FILTER_DELAY = 500;
-const filters = document.querySelector('.img-filters');
+const filtersElement = document.querySelector('.img-filters');
 const ACTIVE_CLASS = 'img-filters__button--active';
 
 const getRandomPhotos = (photos) => {
@@ -48,17 +48,17 @@ const initPhotoFilters = (photos) => {
     clearMiniatures();
     renderMiniatures(getFilteredPhotos(photos, filterId));
   }, FILTER_DELAY);
-  filters.addEventListener('click', (evt) => {
-    const button = evt.target.closest('.img-filters__button');
+  filtersElement.addEventListener('click', (evt) => {
+    const buttonElement = evt.target.closest('.img-filters__button');
 
-    if (!button || button.classList.contains(ACTIVE_CLASS)) {
+    if (!buttonElement || buttonElement.classList.contains(ACTIVE_CLASS)) {
       return;
     }
 
-    filters.querySelector(`.${ACTIVE_CLASS}`).classList.remove(ACTIVE_CLASS);
-    button.classList.add(ACTIVE_CLASS);
+    filtersElement.querySelector(`.${ACTIVE_CLASS}`).classList.remove(ACTIVE_CLASS);
+    buttonElement.classList.add(ACTIVE_CLASS);
 
-    renderFilteredPhotos(button.id);
+    renderFilteredPhotos(buttonElement.id);
   });
 };
 
