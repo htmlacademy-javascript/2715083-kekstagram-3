@@ -1,9 +1,3 @@
-const effectsListElement = document.querySelector('.effects__list');
-const effectLevelContainerElement = document.querySelector('.img-upload__effect-level');
-const effectLevelSliderElement = document.querySelector('.effect-level__slider');
-const effectLevelValueElement = document.querySelector('.effect-level__value');
-const previewImageElement = document.querySelector('.img-upload__preview img');
-
 const EFFECTS = {
   none: {
     filter: '',
@@ -49,28 +43,40 @@ const EFFECTS = {
   },
 };
 
+const effectsListElement = document.querySelector('.effects__list');
+const effectLevelContainerElement = document.querySelector('.img-upload__effect-level');
+const effectLevelSliderElement = document.querySelector('.effect-level__slider');
+const effectLevelValueElement = document.querySelector('.effect-level__value');
+const previewImageElement = document.querySelector('.img-upload__preview img');
+const noneRadioElement = effectsListElement.querySelector('.effects__radio[value="none"]');
+
+let currentEffect = 'none';
+
 const applyEffect = (value, effectName) => {
   const effect = EFFECTS[effectName];
+
   if (effect.filter === '') {
     previewImageElement.style.filter = '';
   } else {
     previewImageElement.style.filter = `${effect.filter}(${value}${effect.unit})`;
   }
+
   effectLevelValueElement.value = value;
 };
 
 noUiSlider.create(effectLevelSliderElement, {
   range: {
-    min: 0,
-    max: 100,
+    min: EFFECTS.none.min,
+    max: EFFECTS.none.max,
   },
-  start: 100,
-  step: 1,
+  start: EFFECTS.none.max,
+  step: EFFECTS.none.step,
   connect: 'lower',
 });
 
 const updateSlider = (effectName) => {
   const effect = EFFECTS[effectName];
+
   if (effectName === 'none') {
     effectLevelSliderElement.noUiSlider.updateOptions({
       range: {
@@ -83,6 +89,7 @@ const updateSlider = (effectName) => {
     effectLevelContainerElement.classList.add('hidden');
     return;
   }
+
   effectLevelContainerElement.classList.remove('hidden');
   effectLevelSliderElement.noUiSlider.updateOptions({
     range: {
@@ -96,7 +103,6 @@ const updateSlider = (effectName) => {
 
 effectLevelSliderElement.noUiSlider.on('update', (values) => {
   const value = parseFloat(values[0]);
-  const currentEffect = document.querySelector('.effects__radio:checked').value;
   applyEffect(value, currentEffect);
 });
 
@@ -105,23 +111,23 @@ effectsListElement.addEventListener('change', (evt) => {
     return;
   }
 
-  const effectName = evt.target.value;
-  updateSlider(effectName);
+  currentEffect = evt.target.value;
+  updateSlider(currentEffect);
 
-  if (effectName === 'none') {
-    applyEffect(100, effectName);
+  if (currentEffect === 'none') {
+    applyEffect(EFFECTS.none.max, currentEffect);
     return;
   }
 
-  effectLevelSliderElement.noUiSlider.set(EFFECTS[effectName].max);
+  effectLevelSliderElement.noUiSlider.set(EFFECTS[currentEffect].max);
 });
 
 const resetEffects = () => {
-  const noneRadioElement = document.querySelector('.effects__radio[value="none"]');
+  currentEffect = 'none';
   noneRadioElement.checked = true;
 
-  updateSlider('none');
-  applyEffect(EFFECTS.none.max, 'none');
+  updateSlider(currentEffect);
+  applyEffect(EFFECTS.none.max, currentEffect);
 };
 
 export { resetEffects };

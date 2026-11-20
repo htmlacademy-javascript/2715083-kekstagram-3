@@ -2,8 +2,8 @@ import { renderMiniatures, clearMiniatures } from './rendering-miniature.js';
 
 const RANDOM_PHOTOS_COUNT = 10;
 const FILTER_DELAY = 500;
-const filtersElement = document.querySelector('.img-filters');
-const ACTIVE_CLASS = 'img-filters__button--active';
+const filters = document.querySelector('.img-filters');
+const activeClass = 'img-filters__button--active';
 
 const getRandomPhotos = (photos) => {
   const shuffledPhotos = [...photos];
@@ -48,17 +48,21 @@ const initPhotoFilters = (photos) => {
     clearMiniatures();
     renderMiniatures(getFilteredPhotos(photos, filterId));
   }, FILTER_DELAY);
-  filtersElement.addEventListener('click', (evt) => {
-    const buttonElement = evt.target.closest('.img-filters__button');
 
-    if (!buttonElement || buttonElement.classList.contains(ACTIVE_CLASS)) {
+  let activeButton = filters.querySelector(`.${activeClass}`);
+
+  filters.addEventListener('click', (evt) => {
+    const button = evt.target.closest('.img-filters__button');
+
+    if (!button || button === activeButton) {
       return;
     }
 
-    filtersElement.querySelector(`.${ACTIVE_CLASS}`).classList.remove(ACTIVE_CLASS);
-    buttonElement.classList.add(ACTIVE_CLASS);
+    activeButton.classList.remove(activeClass);
+    button.classList.add(activeClass);
+    activeButton = button;
 
-    renderFilteredPhotos(buttonElement.id);
+    renderFilteredPhotos(button.id);
   });
 };
 

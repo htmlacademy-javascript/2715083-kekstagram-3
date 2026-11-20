@@ -142,11 +142,6 @@ const initUploadForm = () => {
     }
   });
   formElement.addEventListener('submit', onSubmit);
-  formElement.addEventListener('reset', () => {
-    resetScale();
-    resetEffects();
-    resetValidation();
-  });
 };
 
-export { initUploadForm, closeForm };
+export { initUploadForm };
